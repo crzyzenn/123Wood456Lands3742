@@ -1,0 +1,23 @@
+<?php
+  $let = $connectSql->prepare("SELECT firstname, surname, country FROM Application WHERE id=?");
+  $let->execute([$_GET['id']]);
+  while ($a = $let->fetch()) {
+    # code...
+    echo $a['firstname']." ".$a['surname']."<br>";
+    echo $a['country']."<br>";
+    echo "U.I.D = 12345"."<br><br>";
+    echo "Dear ".$a['firstname'].",<br>";
+  }
+?>
+<br>
+After receiving your application and all the supporting documents, we have found out that some of the documents are missing out. These would be:
+- xxxx
+- xxxx
+- xxxx
+
+We ask that you respond to this letter as soon as possible and send us a proper complete application.
+
+We hope to hear from you soon!
+<br><br>
+Sincerely,<br>
+University of Woodlands Admissions</p>
