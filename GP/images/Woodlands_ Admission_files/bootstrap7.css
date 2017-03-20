@@ -6242,9 +6242,9 @@ button.close {
 /*Modified*/
 
 .customAlign{
-  float:left;
-  position: relative;
-  color: blue;
+  background-color: #DDD;
+  margin-left: 15%;
+
 }
 
 .editBox{

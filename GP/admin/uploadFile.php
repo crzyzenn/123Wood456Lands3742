@@ -34,29 +34,41 @@
   if (isset($_GET['objective'])) {
     if ($_GET['objective'] == 'verify') {
       # code...
-      echo "<script>var a = confirm('Are you sure?'); if(a) window.location = 'uploadFile.php?id=".$_GET['id']."&objective=migrate'; else alert('You have cancelled');</script>";
+      echo "<script>var a = confirm('Are you sure?'); if(a) window.location = 'uploadFile.php?id=".$_GET['id']."&objective=migrate&course_name=".$_GET['course_name']."'; else alert('You have cancelled');</script>";
+
     }
 
+    //Migrating the data from the application to the students table
     else if ($_GET['objective'] == 'migrate') {
       # code...
       alert("Creating new student");
+
+      //Getting the student's info
       $query = $connectSql->prepare("SELECT * FROM Application WHERE id = ?");
       $query->execute([$_GET['id']]);
+
+      //Getting the course_id from the course table
+      $getCourseId = $connectSql->query("SELECT id FROM course WHERE course_title = '".$_GET['course_name']."'");
+      $course_id = 0;
+      foreach ($getCourseId as $value) {
+        $course_id = $value['id']; //Setting the course id
+      }
+
+
+      //Inserting the datat to the student table
       while ($a = $query->fetch()) {
         //Checking duplicates:
         $insert = $connectSql->prepare("INSERT INTO Student(id, gender, firstname, surname, dob, contact, email, course_id) VALUES (?,?,?,?,?,?,?,?)");
-        $insert->execute([$a['case_id'], $a['gender'], $a['firstname'], $a['surname'], $a['dob'], $a['mobile_telephone'], $a['email'], 1]);
+        $insert->execute([$a['case_id'], $a['gender'], $a['firstname'], $a['surname'], $a['dob'], $a['mobile_telephone'], $a['email'], $course_id]);
         if ($insert) {
           # code...
           alert("Successful");
         }
       }
-
     }
   }
-
-
 ?>
+
 
 <div class="container custom">
     <?php if(!empty($statusMsg)){
@@ -83,7 +95,7 @@
               </ul>
             </div>
             <br><br>
-            <table class="table table-bordered">
+            <table class="table table-bordered myTable">
                 <thead>
                     <tr>
                       <th>S.N</th>
@@ -91,17 +103,9 @@
                       <th>Title</th>
                       <th>Firstname</th>
                       <th>Surname</th>
-                      <th>Gender</th>
-                      <th>Father's name</th>
-                      <th>Mother's name</th>
-                      <th>Date of birth</th>
-                      <th>Country</th>
-                      <th>Postal code</th>
-                      <th>Home telephone</th>
-                      <th>Mobile telephone</th>
+                      <th>Gender</th>                      
                       <th>E-Mail</th>
                       <th>Recent gpa</th>
-                      <th>Institute name</th>
                       <th>Passed year</th>
                       <th>Board name</th>
                       <th>Exam number</th>
@@ -131,37 +135,30 @@
                             # code...
 
                             echo "<tr>";
-                             echo "<td>".$row['id']."</td>";
+                             echo "<td>".$row['id']."</td>"; //SN
                               // <!-- Link to create a new case paper for that particular student -->
-                              echo "<td><a href = 'case.php?id=".$row['id']."'>Create case paper</a></td>";
-                              echo "<td>".$row['title']."</td>";
-                              echo "<td>".$row['firstname']."</td>";
-                              echo "<td>".$row['surname']."</td>";
-                              echo "<td>".$row['gender']."</td>";
-                              echo "<td>".$row['father_name']."</td>";
-                              echo "<td>".$row['mother_name']."</td>";
-                              echo "<td>".$row['country']."</td>";
-                              echo "<td>".$row['postal_code']."</td>";
-                              echo "<td>".$row['home_telephone']."</td>";
-                              echo "<td>".$row['mobile_telephone']."</td>";
-                              echo "<td>".$row['email']."</td>";
-                              echo "<td>".$row['recent_gpa']."</td>";
-                              echo "<td>".$row['institute_name']."</td>";
-                              echo "<td>".$row['passed_year']."</td>";
-                              echo "<td>".$row['dob']."</td>";
-                              echo "<td>".$row['board_name']."</td>";
-                              echo "<td>".$row['exam_number']."</td>";
-                              echo "<td>".$row['uci']."</td>";
-                              $dup = $connectSql->prepare("SELECT * FROM Student WHERE ID=?");
+                              echo "<td><a href = 'case.php?id=".$row['id']."'>Create case paper</a></td>"; //CASE ID
+                              echo "<td>".$row['title']."</td>"; //title
+                              echo "<td>".$row['firstname']."</td>"; //Firstname
+                              echo "<td>".$row['surname']."</td>"; //Surname
+                              echo "<td>".$row['gender']."</td>"; //gender
+                              echo "<td>".$row['email']."</td>"; //email
+                              echo "<td>".$row['recent_gpa']."</td>"; //Recent gpa
+
+                              echo "<td>".$row['passed_year']."</td>"; //Passed year
+                              echo "<td>".$row['board_name']."</td>"; //Board name
+                              echo "<td>".$row['exam_number']."</td>"; //Exam number
+                              echo "<td>".$row['uci']."</td>"; //UCI
+                              $dup = $connectSql->prepare('SELECT * FROM Student WHERE ID=?');
                               $dup->execute([$row['case_id']]);
                               $a = $dup->rowCount();
                               if ($a == 0) {
-                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify'>Verify</a></td>";
+                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify&course_name=".$row['course_name']."'>Verify</a></td>";
                               }
                               else {
                                 echo "<td>Already added</td>";
                               }
-                              echo "<td>".$row['course_name']."</td>";
+                              echo "<td>".$row['course_name']."</td>"; //course_name
                             echo "</tr>";
                         }
                       }
@@ -182,17 +179,11 @@
                               echo "<td>".$row['firstname']."</td>";
                               echo "<td>".$row['surname']."</td>";
                               echo "<td>".$row['gender']."</td>";
-                              echo "<td>".$row['father_name']."</td>";
-                              echo "<td>".$row['mother_name']."</td>";
-                              echo "<td>".$row['country']."</td>";
-                              echo "<td>".$row['postal_code']."</td>";
-                              echo "<td>".$row['home_telephone']."</td>";
-                              echo "<td>".$row['mobile_telephone']."</td>";
+
                               echo "<td>".$row['email']."</td>";
                               echo "<td>".$row['recent_gpa']."</td>";
-                              echo "<td>".$row['institute_name']."</td>";
+
                               echo "<td>".$row['passed_year']."</td>";
-                              echo "<td>".$row['dob']."</td>";
                               echo "<td>".$row['board_name']."</td>";
                               echo "<td>".$row['exam_number']."</td>";
                               echo "<td>".$row['uci']."</td>";
@@ -200,7 +191,7 @@
                               $dup->execute([$row['case_id']]);
                               $a = $dup->rowCount();
                               if ($a == 0) {
-                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify'>Verify</a></td>";
+                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify&course_name=".$row['course_name']."'>Verify</a></td>";
                               }
                               else {
                                 echo "<td>Already added</td>";
@@ -225,17 +216,10 @@
                               echo "<td>".$row['firstname']."</td>";
                               echo "<td>".$row['surname']."</td>";
                               echo "<td>".$row['gender']."</td>";
-                              echo "<td>".$row['father_name']."</td>";
-                              echo "<td>".$row['mother_name']."</td>";
-                              echo "<td>".$row['country']."</td>";
-                              echo "<td>".$row['postal_code']."</td>";
-                              echo "<td>".$row['home_telephone']."</td>";
-                              echo "<td>".$row['mobile_telephone']."</td>";
                               echo "<td>".$row['email']."</td>";
                               echo "<td>".$row['recent_gpa']."</td>";
-                              echo "<td>".$row['institute_name']."</td>";
+
                               echo "<td>".$row['passed_year']."</td>";
-                              echo "<td>".$row['dob']."</td>";
                               echo "<td>".$row['board_name']."</td>";
                               echo "<td>".$row['exam_number']."</td>";
                               echo "<td>".$row['uci']."</td>";
@@ -243,7 +227,7 @@
                               $dup->execute([$row['case_id']]);
                               $a = $dup->rowCount();
                               if ($a == 0) {
-                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify'>Verify</a></td>";
+                                echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify&course_name=".$row['course_name']."'>Verify</a></td>";
                               }
                               else {
                                 echo "<td>Already added</td>";
@@ -266,20 +250,14 @@
                             // <!-- Link to create a new case paper for that particular student -->
                             echo "<td><a href = 'case.php?id=".$row['id']."'>Create case paper</a></td>";
                             echo "<td>".$row['title']."</td>";
-                            echo "<td>".$row['firstname']."</td>";
+                            echo "<td><a title = 'Click for more details' href = 'moreDetails.php?id=".$row['id']."'>".$row['firstname']."</a></td>";
                             echo "<td>".$row['surname']."</td>";
                             echo "<td>".$row['gender']."</td>";
-                            echo "<td>".$row['father_name']."</td>";
-                            echo "<td>".$row['mother_name']."</td>";
-                            echo "<td>".$row['country']."</td>";
-                            echo "<td>".$row['postal_code']."</td>";
-                            echo "<td>".$row['home_telephone']."</td>";
-                            echo "<td>".$row['mobile_telephone']."</td>";
+
                             echo "<td>".$row['email']."</td>";
                             echo "<td>".$row['recent_gpa']."</td>";
-                            echo "<td>".$row['institute_name']."</td>";
+
                             echo "<td>".$row['passed_year']."</td>";
-                            echo "<td>".$row['dob']."</td>";
                             echo "<td>".$row['board_name']."</td>";
                             echo "<td>".$row['exam_number']."</td>";
                             echo "<td>".$row['uci']."</td>";
@@ -287,7 +265,7 @@
                             $dup->execute([$row['case_id']]);
                             $a = $dup->rowCount();
                             if ($a == 0) {
-                              echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify'>Verify</a></td>";
+                              echo "<td><a href = 'uploadFile.php?id=".$row['id']."&objective=verify&course_name=".$row['course_name']."'>Verify</a></td>";
                             }
                             else {
                               echo "<td>Already added</td>";

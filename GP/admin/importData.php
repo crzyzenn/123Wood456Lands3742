@@ -52,6 +52,7 @@ if(isset($_POST['importSubmit'])){
                 //If no duplicate values, then insert them
                 else {
                   # code...
+                    alert("Here"); 
                     $qstring = '?status=succ';
                   //Running the insert query into the Application table
                   $connectSql->query("INSERT INTO Application (title, gender, firstname, surname, father_name, mother_name, dob, country, postal_code, home_telephone, mobile_telephone, email, recent_gpa, institute_name, passed_year, board_name, exam_number, uci, course_name) VALUES ($values)");

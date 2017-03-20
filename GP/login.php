@@ -1,33 +1,32 @@
 <?php
   require "build.php";
   getHead("Woodlands:Login");
+
+
+  //Get the data from the database
+  $loginData = $connectSql->query("SELECT username, password FROM Staff where username = '".$_POST['email']."'");
+  if (isset($_POST['submit'])) {
+    $status = "";
+    foreach ($loginData as $value) {
+      if ($value['username'] == $_POST['email'] && $value['password'] == $_POST['pwd']) {
+        $status = true;
+      }
+
+      else {
+        $status = false;
+      }
+    }
+
+    if ($status) {
+      alert("Logged in");
+      $_SESSION['name'] = $value['username'];
+      redirect("userPage.php?type=staff");
+    }
+
+    else {
+      alert("Username/Password incorrect");
+      redirect("index.php");
+    }
+
+  }
 ?>
-<div class = "container">
-  <form class="form-horizontal" method = "POST" action = "login.php">
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="email">Email:</label>
-      <div class="col-sm-10">
-        <input type="email" class="form-control" id="email" placeholder="Enter University ID">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="pwd">Password:</label>
-      <div class="col-sm-10">
-        <input type="password" class="form-control" id="pwd" placeholder="Enter password">
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-          <label><input type="checkbox"> Remember me</label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </div>
-  </form>
-</div>
-</div>

@@ -1408,8 +1408,8 @@ a.bg-danger:focus {
   background-color: #e4b9b9;
 }
 .page-header {
-  padding-bottom: 9px;
-  margin: 40px 0 20px;
+
+  margin: 20px 0 20px;
   border-bottom: 1px solid #eee;
 }
 ul,
@@ -6241,10 +6241,19 @@ button.close {
 /*MY CSS*/
 /*Modified*/
 
+.myTable{
+    width: 38%;
+}
+
+.panelAlign{
+    width: 94%;
+
+}
+
 .customAlign{
-  float:left;
-  position: relative;
-  color: blue;
+  padding-top: 20px;
+  margin-left: 15%;
+
 }
 
 .editBox{

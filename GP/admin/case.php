@@ -90,8 +90,8 @@
       <div id="home" class="tab-pane fade in active">
         <div class="form-group">
             <p class = "page-item">
-              <button type="button" class="btn btn-info btn-primary" data-toggle="modal" data-target="#myModal">View template</button>
-              <button type="submit" class="btn btn-primary" onclick="printThis('conditional');">Print</button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View template</button>
+              <button type="submit" class="btn btn-primary" onclick="printThis('conditional');"><span class = 'glyphicon glyphicon-print'></span> Print</button>
 
               <!-- Modal -->
               <div class="modal fade" id="myModal" role="dialog">
@@ -181,7 +181,7 @@
               <label class = "control-label" for="missing">Report missing: </label>
               <input type="text" class = "" name="miss" value="">
               <input type="submit" class = "btn btn-primary" name="missing" value="Submit">
-              <button type="submit" class="btn btn-primary" onclick="printThis('Unconditional');">Print</button>
+              <button type="submit" class="btn btn-primary" onclick="printThis('Unconditional');"><span class = 'glyphicon glyphicon-print'></span> Print</button>
             </div>
           </form>
           <div class="form-group">
