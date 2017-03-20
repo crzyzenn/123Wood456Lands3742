@@ -2,68 +2,197 @@
   session_start();
 
 
-  function getHead($title){
-    echo "<!DOCTYPE html>";
-    echo "<html>";
-    echo "<head>";
-      echo '<meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=10">
-      <link rel="stylesheet" type = "text/css" href="../css/bootstrap6.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <script src="../js/script.js"></script>';
-    echo "</head>";
-    echo "<title>";
-      echo $title;
-    echo "</title>";
-    echo "<body>";
-    echo '<!--University logo image-->
-      <a href = "index.php"><img src="../images/logo.png" id = "headerImage" width = 100px></a>
-      <h3 class = "text-justify">Woodlands University & College - Admin</h3>
+  function getHead($title, $type = null){
 
-      <div class="container headSpace">';
+    //Page for course leaderes
+    if ($type == "leader") {
+      echo "<!DOCTYPE html>";
+      echo "<html>";
+      echo "<head>";
+        echo '<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=10">
+        <link rel="stylesheet" type = "text/css" href="css/bs1.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/script.js"></script>';
+      echo "</head>";
+      echo "<title>";
+        echo $title;
+      echo "</title>";
+      echo "<body>";
+      echo '<!--University logo image-->
+        <a href = "index.php"><img src="images/logo.png" id = "headerImage" width = 100px></a>
+        <h3 class = "text-justify">Woodlands University & College</h3>
 
-      if (isset($_SESSION['name'])) {
-        # code...
+        <div class="container headSpace">';
 
-        echo '<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-          <div class="container">
-              <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                  </button>
-              </div>
+        if (isset($_SESSION['name'])) {
 
-              <!-- Collect the nav links, forms, and other content for toggling -->
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                  <ul class="nav navbar-nav">
-                    <li><a href = "#" >'.$_SESSION["name"].'</a></li>
-                  </ul>
-                  <form class = "form-inline pull-right" action = "admission.php" method = "POST">
-                    <input type = "submit" class = "btn btn-success" name = "logout" value = "Logout">
-                  </form>
-              </div>
-          </div>
-      </nav>';
-      echo '
-      <div class="col-xs-2 pull-left">
-          <ul class="nav nav-stacked adjust">
-            <li class="active"><a href="#">Menu 1</a></li>
-            <li><a href="#">Menu Item 2</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admission <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="uploadFile.php">Upload UCAS file</a></li>
-                <li><a href="case.php">Case papers</a></li>
-              </ul>
-            </li>
-            <li><a href="#">Menu Item 4</a></li>
-            <li><a href="#">Reviews<span class="badge">20</span></a></li>
-          </ul>
-      </div>';
+
+          echo '<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                      <li><a href = "#" >'.$_SESSION["name"].'</a></li>
+                    </ul>
+                    <form class = "form-inline pull-right" action = "userPage.php?action=logout" method = "POST">
+                      <input type = "submit" class = "btn btn-success" name = "logout" value = "Logout">
+                    </form>
+                </div>
+            </div>
+        </nav>';
+        echo '
+        <div class="col-xs-2 pull-left">
+            <ul class="nav nav-stacked adjust">
+              <li><a href="studentView.php">Student</a></li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Course <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addCourse.php">Add course</a></li>
+                  <li><a href = "viewCourse.php">View courses</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Module <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">PAT <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Time-table <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Diary <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Report Generation <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "studentView.php">Enter grades</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Attendance records <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Assignments <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+              <li class = "dropdown">
+                <a href="" class = "dropdown-toggle" data-toggle = "dropdown">Module <b class = "caret"></b></a>
+                <ul class = "dropdown-menu">
+                  <li><a href = "addModule.php">Add module</a></li>
+                </ul>
+              </li>
+
+            </ul>
+        </div>';
+        // <li><a href="#">Menu Item 4</a></li>
+        // <li><a href="#">Reviews<span class="badge">20</span></a></li>
+      }
+    }
+
+    //For admins
+    else {
+      echo "<!DOCTYPE html>";
+      echo "<html>";
+      echo "<head>";
+        echo '<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=10">
+        <link rel="stylesheet" type = "text/css" href="../css/bs1.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="../js/script.js"></script>';
+      echo "</head>";
+      echo "<title>";
+        echo $title;
+      echo "</title>";
+      echo "<body>";
+      echo '<!--University logo image-->
+        <a href = "index.php"><img src="../images/logo.png" id = "headerImage" width = 100px></a>
+        <h3 class = "text-justify">Woodlands University & College - Admin</h3>
+
+        <div class="container headSpace">';
+
+        if (isset($_SESSION['name'])) {
+          # code...
+
+          echo '<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                      <li><a href = "#" >'.$_SESSION["name"].'</a></li>
+                    </ul>
+                    <form class = "form-inline pull-right" action = "admission.php" method = "POST">
+                      <input type = "submit" class = "btn btn-success" name = "logout" value = "Logout">
+                    </form>
+                </div>
+            </div>
+        </nav>';
+        echo '
+        <div class="col-xs-2 pull-left">
+            <ul class="nav nav-stacked adjust">
+              <li class="dropdown">
+                <a href = "" class="dropdown-toggle" data-toggle="dropdown">Admission <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="uploadFile.php">Upload UCAS file</a></li>
+                  <li><a href="case.php">Case papers</a></li>
+                </ul>
+              </li>
+              <li><a href="studentView.php">Student</a></li>
+
+
+              <li><a href="#">Student records</a></li>
+              <li><a href="#">Staff records</a></li>
+
+            </ul>
+        </div>';
+      }
     }
   }
 
@@ -116,12 +245,17 @@
     return $runQuery->fetch();
   }
 
-  // function selectAll($pdo, $field, $value){
-  //   $query = 'SELECT * FROM '.$pdo.' WHERE '.$field.'='.$value;
-  //   $pre = $pdo->prepare($query);
-  //   $exec = $pre->execute();
-  //   return $exec->fetch();
-  // }
+  function selectAll($pdo, $table, $field, $value){
+    if ($field == "" AND $value == "") {
+        $query = 'SELECT * FROM '.$table;
+    }
+    else {
+      $query = 'SELECT * FROM '.$table.' WHERE '.$field.'='.$value;
+    }
+    $pre = $pdo->query($query);
+
+    return $pre;
+  }
 
   function runUpdate($pdo, $table, $field, $value, $constraint, $constraintValue){
     $query = 'UPDATE '.$table.' SET '.$field.'="'.$value.'" WHERE '.$constraint.'="'.$constraintValue.'"';
@@ -154,4 +288,15 @@
       header("refresh:0;url=index.php");
     }
   }
+
+  function space($number){
+    for($i = 0; $i < $number; $i++){
+      echo "<br>";
+    }
+  }
+
+  function direct($url){
+    header("refresh:0;url=".$url."");
+  }
+
 ?>
